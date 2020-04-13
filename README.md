@@ -7,5 +7,5 @@ Spring Boot microservice demo.(spring boot,spring cloud)
 I will own muti module
 
 mq目录目前有 RabbitMQ 和 Kafka 为基础搭建的消息中间件
-The directory 'mq' , contains the message middleware 'RabbitMq' & 'Kafka'
+The directory 'mq' , contains the message middleware 'RabbitMq' & 'Kafka' .
 
