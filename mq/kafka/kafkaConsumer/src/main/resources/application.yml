@@ -1,0 +1,6 @@
+server:
+  port: 20001
+
+spring:
+  kafka:
+    bootstrap-servers: 172.16.65.39:9092

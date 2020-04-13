@@ -1,0 +1,165 @@
+version: '2'
+services:
+  mysql:
+    # image: mysql:8.0.16
+    image: mysql:latest
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+    networks:
+      - backend-net
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+      - /srv/docker/chmp/mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+      PMA_HOST: mysql
+    volumes:
+     - /sessions
+     - ~/docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    #  - /custom/phpmyadmin/theme/:/www/themes/theme/
+    networks:
+      - backend-net
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - backend-net
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+      - /srv/docker/chmp/redis:/var/lib/redis
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    hostname: kafka
+    # links:
+      # - zookeeper:zookeeper
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.65.39:9092
+      DOCKER_API_VERSION: 1.22
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 172.16.65.39
+      # KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ADVERTISED_PORT: 9092
+      TZ: Asia/Shanghai
+    networks:
+      - backend-net
+    volumes:
+      - /Users/yangli/Desktop/xcloud/Shanghai:/etc/localtime:ro
+      # - /Users/yangli/Desktop/xcloud/Shanghai:/etc/timezone:ro
+      # - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    hostname: zookeeper
+    networks:
+      - backend-net
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+      # - /Users/yangli/Desktop/xcloud/Shanghai:/etc/localtime:ro
+      # - /Users/yangli/Desktop/xcloud/Shanghai:/etc/timezone:ro
+      # - /Users/yangli/Desktop/xcloud/timezone:/etc/timezone:ro
+    environment:
+      - TZ = Asia/Shanghai
+
+  rabbitmq:
+    # image: rabbitmq:3.8.3-management
+    # image: rabbitmq:latest
+    # image: rabbitmq:3.7-management
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    # restart: always
+    networks:
+      - backend-net
+    volumes:
+      # - /Users/yangli/Desktop/xcloud/Shanghai:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
+      # - /etc/timezone:/etc/timezone:ro
+
+networks:
+  backend-net:
+    driver: bridge
+  # seaweed-net:
+  #   driver: bridge
+  # kafka-net:
+  #   driver: bridge
+
+  # 已过期
+  # weedfs0:
+  #   image: ferronrsmith/seaweedfs:latest
+  #   command: master
+  #   networks:
+  #     - seaweed-net
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+
+  # weedfs1:
+  #   image: ferronrsmith/seaweedfs:latest
+  #   command: volume -mserver="weedfs0:9333" -ip=weedfs1 -port=9334 -dir=/data -publicUrl=1 -max=3
+  #   networks:
+  #     - seaweed-net
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+  #     - /srv/docker/chmp/weedfs/s1:/data
+
+  # weedfs2:
+  #   image: ferronrsmith/seaweedfs:latest
+  #   command: volume -mserver="weedfs0:9333" -ip=weedfs2 -port=9335 -dir=/data -publicUrl=2 -max=3
+  #   networks:
+  #     - seaweed-net
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+  #     - /srv/docker/chmp/weedfs/s2:/data
+
+  # kafka:
+  #   image: wurstmeister/kafka:0.8.2.2
+  #   links:
+  #     - zookeeper:zookeeper
+  #   environment:
+  #     - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - KAFKA_ADVERTISED_HOST_NAME=kafka
+  #     - KAFKA_ADVERTISED_PORT=9092
+  #   networks:
+  #     - kafka-net
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
+  # zookeeper:
+  #   image: jplock/zookeeper
+  #   networks:
+  #     - kafka-net
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /etc/timezone:/etc/timezone:ro
