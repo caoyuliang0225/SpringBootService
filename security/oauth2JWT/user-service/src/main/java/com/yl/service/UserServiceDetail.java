@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Created by fangzhipeng on 2017/5/10.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 @Service
 public class UserServiceDetail implements UserDetailsService {
@@ -25,6 +25,7 @@ public class UserServiceDetail implements UserDetailsService {
     private UserDao userRepository;
     @Autowired
     AuthServiceClient client;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
@@ -54,7 +55,7 @@ public class UserServiceDetail implements UserDetailsService {
         UserLoginDTO userLoginDTO=new UserLoginDTO();
         userLoginDTO.setJwt(jwt);
         userLoginDTO.setUser(user);
-        return userLoginDTO;
 
+        return userLoginDTO;
     }
 }

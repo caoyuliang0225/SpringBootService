@@ -1,20 +1,24 @@
 package com.yl.entity;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.*;
 
 
 /**
- * Created by fangzhipeng on 2017/5/27.
+ * Created by Cao Yuliang on 2020/4/15.
  */
-
+@Data
 @Entity
 public class User implements UserDetails, Serializable {
+
+	private static final long serialVersionUID = 1437864798308394426L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,47 +29,17 @@ public class User implements UserDetails, Serializable {
 	@Column
 	private String password;
 
+	@Column
+	private String phone = "13012345678";
+
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private List<Role> authorities;
 
-
-	public User() {
-	}
-
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
-	}
-
-	public void setAuthorities(List<Role> authorities) {
-		this.authorities = authorities;
-	}
-
-	@Override
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	@Override
@@ -87,6 +61,4 @@ public class User implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return true;
 	}
-
-
 }

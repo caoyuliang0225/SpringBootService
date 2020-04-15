@@ -1,7 +1,5 @@
 package com.yl.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,12 +10,16 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 /**
- * Created by fangzhipeng on 2017/6/1.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 @Configuration
 @EnableResourceServer
-public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
-    Logger log = LoggerFactory.getLogger(ResourceServerConfig.class);
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    @Autowired
+    TokenStore tokenStore;
+    @Autowired
+    JwtAccessTokenConverter tokenConverter;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -26,7 +28,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
                 .authorizeRequests()
                 .antMatchers("/user/login","/user/register").permitAll()
                 .antMatchers("/**").authenticated();
-
     }
 
 
@@ -34,10 +35,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId("foo").tokenStore(tokenStore);
     }
-
-    @Autowired
-    TokenStore tokenStore;
-
-    @Autowired
-    JwtAccessTokenConverter tokenConverter;
 }

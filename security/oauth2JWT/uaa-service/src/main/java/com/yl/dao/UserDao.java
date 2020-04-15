@@ -5,7 +5,7 @@ import com.yl.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * Created by fangzhipeng on 2017/5/27.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 
 public interface UserDao extends JpaRepository<User, Long> {

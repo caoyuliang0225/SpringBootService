@@ -1,5 +1,6 @@
 package com.yl.config;
 
+import com.yl.service.UserServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +19,43 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 /**
- * Created by fangzhipeng on 2017/5/27.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 @Configuration
 @EnableAuthorizationServer
 public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
+
+
+    @Autowired
+    private UserServiceDetail userServiceDetail;
+    @Autowired
+    @Qualifier("authenticationManagerBean")
+    private AuthenticationManager authenticationManager;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Bean
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(jwtTokenEnhancer());
+    }
+
+    @Bean
+    protected JwtAccessTokenConverter jwtTokenEnhancer() {
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("fzp-jwt.jks"), "fzp123".toCharArray());
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        JwtAccessTokenConverter converter = new JwtAccessToken();
+        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("fzp-jwt"));
+        return converter;
+    }
+
+    /**
+     * spring 升级5.0后，secret需要加密，否则 id is null/not look like BCrypt
+     * @param clients
+     * @throws Exception
+     */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
@@ -45,24 +72,8 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         endpoints
                 .tokenStore(tokenStore())
                 .tokenEnhancer(jwtTokenEnhancer())
+                .reuseRefreshTokens(false).userDetailsService(userServiceDetail)
                 .authenticationManager(authenticationManager);
-    }
-
-    @Autowired
-    @Qualifier("authenticationManagerBean")
-    private AuthenticationManager authenticationManager;
-
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtTokenEnhancer());
-    }
-
-    @Bean
-    protected JwtAccessTokenConverter jwtTokenEnhancer() {
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("fzp-jwt.jks"), "fzp123".toCharArray());
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setKeyPair(keyStoreKeyFactory.getKeyPair("fzp-jwt"));
-        return converter;
     }
 
 //    @Override

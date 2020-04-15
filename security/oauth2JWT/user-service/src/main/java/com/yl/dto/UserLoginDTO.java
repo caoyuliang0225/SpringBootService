@@ -2,29 +2,15 @@ package com.yl.dto;
 
 import com.yl.entity.JWT;
 import com.yl.entity.User;
+import lombok.Data;
 
 /**
- * Created by fangzhipeng on 2017/5/27.
+ * Created by Cao Yuliang on 2020/4/15.
  */
+@Data
 public class UserLoginDTO {
 
     private JWT jwt;
 
     private User user;
-
-    public JWT getJwt() {
-        return jwt;
-    }
-
-    public void setJwt(JWT jwt) {
-        this.jwt = jwt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

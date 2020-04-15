@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Created by fangzhipeng on 2017/5/31.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 public class BPwdEncoderUtil {
 
@@ -29,7 +29,4 @@ public class BPwdEncoderUtil {
     public static boolean matches(CharSequence rawPassword, String encodedPassword){
         return encoder.matches(rawPassword,encodedPassword);
     }
-
-
-
 }

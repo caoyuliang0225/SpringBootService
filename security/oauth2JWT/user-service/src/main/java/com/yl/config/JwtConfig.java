@@ -14,10 +14,11 @@ import org.springframework.util.FileCopyUtils;
 import java.io.IOException;
 
 /**
- * Created by fangzhipeng on 2017/6/1.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 @Configuration
 public class JwtConfig {
+
     @Autowired
     JwtAccessTokenConverter jwtAccessTokenConverter;
 
@@ -29,6 +30,7 @@ public class JwtConfig {
 
     @Bean
     protected JwtAccessTokenConverter jwtTokenEnhancer() {
+
         JwtAccessTokenConverter converter =  new JwtAccessTokenConverter();
         Resource resource = new ClassPathResource("public.cert");
         String publicKey ;
@@ -38,6 +40,7 @@ public class JwtConfig {
             throw new RuntimeException(e);
         }
         converter.setVerifierKey(publicKey);
+
         return converter;
     }
 }

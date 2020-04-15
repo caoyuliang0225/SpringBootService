@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Created by fangzhipeng on 2017/6/1.
+ * Created by Cao Yuliang on 2020/4/15.
  */
 @ControllerAdvice
 @ResponseBody
 public class ExceptionHandle {
+
     @ExceptionHandler(UserLoginException.class)
     public ResponseEntity<String> handleException(Exception e) {
-
         return new ResponseEntity(e.getMessage(), HttpStatus.OK);
     }
 }
