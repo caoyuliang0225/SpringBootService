@@ -1,0 +1,32 @@
+spring.profiles.active: @spring.profiles.active@
+spring.application.name: @project.artifactId@
+server.port: @server.port@
+
+spring:
+  security:
+    user:
+      password: pass
+      name: admin
+  datasource:
+    url: @spring.datasource.url@
+    username: @spring.datasource.username@
+    password: @spring.datasource.password@
+    test-while-idle: true
+    max-wait-millis: 30000
+    validation-query: 'SELECT 1'
+    time-between-eviction-runs-millis: 20000
+    min-evictable-idle-time-millis: 28700
+    data: classpath:scheme.sql
+    continue-on-error: true
+  jpa:
+    database-platform: @spring.jpa.database-platform@
+    hibernate:
+      ddl-auto: @spring.jpa.hibernate.ddl-auto@
+    show-sql: @spring.jpa.show-sql@
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+      settings:
+        web-allow-others: true
+        trace: true

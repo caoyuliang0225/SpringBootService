@@ -12,7 +12,10 @@ sql目录下，脚本先执行，在数据库中创建相应的表，或者将SQ
 >		</dependency>
 		
 这个包中包含了
-
+>        <dependency>
+>            <groupId>org.springframework.boot</groupId>
+>            <artifactId>spring-boot-starter-security</artifactId>
+>        </dependency>
 >		<dependency>
 >			<groupId>org.springframework.security</groupId>
 >			<artifactId>spring-security-jwt</artifactId>
