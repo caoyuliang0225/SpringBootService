@@ -1,0 +1,14 @@
+server:
+  port: 20005
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring-boot-mybatis?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&characterSetResults=utf-8&serverTimezone=UTC
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

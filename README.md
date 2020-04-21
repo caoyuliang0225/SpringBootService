@@ -10,3 +10,21 @@ eureka-server目录是所有服务的注册中心
 
 security目录是 spring security和 oauth2+JWT
 
+
+
+eureka             8761
+
+mq:
+kafka consumer    20001
+kafka producer    20000
+rabbit consumer    9001
+rabbit producer    9000
+
+security
+oauth2 jwt uaa     8099
+oauth2 jwt user    9090 
+spring security   10000
+
+dao
+mybatis           20005
+
